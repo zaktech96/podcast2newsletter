@@ -119,6 +119,9 @@ importers:
       '@tremor/react':
         specifier: ^3.16.2
         version: 3.18.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@tsparticles/engine':
+        specifier: ^3.8.1
+        version: 3.8.1
       '@tsparticles/react':
         specifier: ^3.0.0
         version: 3.0.0(@tsparticles/engine@3.8.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -177,7 +180,7 @@ importers:
         specifier: ^1.4.4
         version: 1.4.4
       motion:
-        specifier: ^12.4.11
+        specifier: ^12.9.2
         version: 12.9.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       next:
         specifier: ^15.2.3
