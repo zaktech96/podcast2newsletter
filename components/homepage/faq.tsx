@@ -1,99 +1,166 @@
 'use client';
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import { PlusIcon, MinusIcon } from '@radix-ui/react-icons';
+
+const faqs = [
+  {
+    question: "How accurate are the AI-generated summaries?",
+    answer: "Our AI summaries maintain 98%+ accuracy through advanced natural language processing. Each summary goes through multiple quality checks to ensure key points, context, and nuance are preserved from your podcast episodes."
+  },
+  {
+    question: "How long does it take to generate a newsletter?",
+    answer: "Most newsletters are generated within 5 minutes of uploading your episode. The AI processes your content in real-time, allowing you to quickly review and publish the newsletter to your subscribers."
+  },
+  {
+    question: "Can I customize the newsletter templates?",
+    answer: "Yes! All plans include customizable templates. Professional and Enterprise plans offer advanced customization options including custom branding, layouts, and CSS styling to match your podcast's unique identity."
+  },
+  {
+    question: "How do you handle multiple languages?",
+    answer: "Our platform supports 30+ languages with native-quality translations. The AI maintains context and meaning across languages, helping you reach international audiences effectively."
+  },
+  {
+    question: "What platforms do you integrate with?",
+    answer: "We integrate with all major podcast platforms including Spotify, Apple Podcasts, Google Podcasts, and YouTube. We also support direct RSS feed connections and custom API integrations."
+  },
+  {
+    question: "How does the monetization work?",
+    answer: "You can monetize through premium newsletter subscriptions, sponsored content, and ad revenue sharing. We provide tools to manage subscriptions, track revenue, and optimize your monetization strategy."
+  },
+  {
+    question: "Is there a limit to subscriber numbers?",
+    answer: "Starter plans include up to 1,000 subscribers, Professional up to 10,000, and Enterprise has unlimited subscribers. You can upgrade your plan anytime as your audience grows."
+  },
+  {
+    question: "What kind of support do you offer?",
+    answer: "All plans include email support. Professional plans get priority support with 24-hour response times. Enterprise plans receive dedicated account management and technical support."
+  }
+];
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+};
+
+const stagger = {
+  animate: {
+    transition: {
+      staggerChildren: 0.12
+    }
+  }
+};
 
 export default function FAQ() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0.2 });
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <div ref={ref} className="w-full pt-8 py-16 bg-black">
-      <div className="container mx-auto max-w-6xl px-4">
-        <motion.h2
-          className="text-3xl md:text-4xl font-semibold tracking-tight text-white text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5 }}
+    <section className="w-full py-32 bg-gradient-to-b from-purple-50 to-white dark:from-purple-900/10 dark:to-black relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02] dark:opacity-[0.05]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_-20%,rgba(120,40,200,0.08),transparent_25%)]" />
+      
+      <motion.div 
+        className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true }}
+        variants={stagger}
+      >
+        <motion.div 
+          className="text-center mb-16"
+          variants={fadeInUp}
         >
-          Frequently Asked Questions
-        </motion.h2>
-
-        <motion.div
-          className="max-w-3xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <Accordion type="single" collapsible className="space-y-4">
-            <AccordionItem 
-              value="item-1" 
-              className="border border-green-900/30 rounded-lg px-6 bg-black hover:border-green-500/20 transition-all duration-200"
-            >
-              <AccordionTrigger className="text-white hover:text-green-400 text-lg font-medium py-4">
-                What's included in the Titan boilerplate?
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-400 pb-4">
-                Titan includes everything you need to build a modern SaaS application with Next.js 14, including authentication with Clerk, database with Supabase, UI components with Shadcn, payments with Stripe, dark mode, and more.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem 
-              value="item-2" 
-              className="border border-green-900/30 rounded-lg px-6 bg-black hover:border-green-500/20 transition-all duration-200"
-            >
-              <AccordionTrigger className="text-white hover:text-green-400 text-lg font-medium py-4">
-                How do I get started with Titan?
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-400 pb-4">
-                Getting started is simple. Clone the repository, install dependencies, and configure your environment variables. Follow our comprehensive documentation for detailed instructions on setup and deployment.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem 
-              value="item-3" 
-              className="border border-green-900/30 rounded-lg px-6 bg-black hover:border-green-500/20 transition-all duration-200"
-            >
-              <AccordionTrigger className="text-white hover:text-green-400 text-lg font-medium py-4">
-                Can I customize Titan to match my brand?
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-400 pb-4">
-                Absolutely! Titan is designed to be fully customizable. You can easily change colors, typography, and other design elements to match your brand identity. The codebase is modular and easily customizable.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem 
-              value="item-4" 
-              className="border border-green-900/30 rounded-lg px-6 bg-black hover:border-green-500/20 transition-all duration-200"
-            >
-              <AccordionTrigger className="text-white hover:text-green-400 text-lg font-medium py-4">
-                Is Titan suitable for production?
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-400 pb-4">
-                Yes, Titan is built for production use. All of the providers operate smoothly at high-scale. Vercel also takes care of a lot of the infrastructure for you (including DDOS protection). You shouldn't be worrying about any self-hosting until a significant amount of users are on your platform (e.g. 500,000 MAU).
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem 
-              value="item-5" 
-              className="border border-green-900/30 rounded-lg px-6 bg-black hover:border-green-500/20 transition-all duration-200"
-            >
-              <AccordionTrigger className="text-white hover:text-green-400 text-lg font-medium py-4">
-                Do you offer support for Titan?
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-400 pb-4">
-                Yes. We offer community support through the #ask-for-help Discord channel in the <a href="https://discord.gg/Gh67NqaY" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:text-green-300">Discord Server</a>.
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          <motion.div 
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 backdrop-blur-sm mb-8 shadow-sm"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
+          >
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">❓</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 font-medium">Common Questions</span>
+          </motion.div>
+          
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+            Frequently Asked
+            <br />
+            <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-purple-500 bg-clip-text text-transparent">Questions</span>
+          </h2>
+          
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            Everything you need to know about our AI-powered podcast to newsletter platform.
+          </p>
         </motion.div>
-      </div>
-    </div>
+
+        <motion.div 
+          className="space-y-4"
+          variants={stagger}
+        >
+          {faqs.map((faq, index) => (
+            <motion.div
+              key={index}
+              className="relative group"
+              variants={fadeInUp}
+              transition={{ delay: index * 0.1 }}
+            >
+              <div className="absolute -inset-2 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-5 transition-opacity duration-300 blur-sm" />
+              <div className="relative bg-white dark:bg-gray-900 rounded-xl shadow-sm group-hover:shadow-md transition-shadow duration-300">
+                <button
+                  className="w-full px-6 py-4 text-left flex items-center justify-between gap-4"
+                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                >
+                  <h3 className="font-medium text-gray-900 dark:text-white text-lg">
+                    {faq.question}
+                  </h3>
+                  <div className={`shrink-0 w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center transition-transform duration-300 ${
+                    openIndex === index ? 'rotate-180' : ''
+                  }`}>
+                    {openIndex === index ? (
+                      <MinusIcon className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                    ) : (
+                      <PlusIcon className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                    )}
+                  </div>
+                </button>
+                <AnimatePresence>
+                  {openIndex === index && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-6 pb-4 text-gray-600 dark:text-gray-400">
+                        {faq.answer}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        <motion.div 
+          className="mt-16 text-center"
+          variants={fadeInUp}
+        >
+          <p className="text-gray-600 dark:text-gray-400 mb-8">
+            Still have questions? We're here to help.
+          </p>
+          <a 
+            href="/contact"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-medium bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300 transform hover:scale-105"
+          >
+            Contact Support
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </a>
+        </motion.div>
+      </motion.div>
+    </section>
   );
 }

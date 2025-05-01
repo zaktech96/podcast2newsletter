@@ -1,4 +1,5 @@
 import config from '@/config';
+import { initializeHeaders } from './next-headers-safe';
 
 const requiredEnvVars = {
   auth: ['NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY', 'CLERK_SECRET_KEY'],
@@ -19,7 +20,10 @@ function checkEnvVars(feature: keyof typeof requiredEnvVars): boolean {
   });
 }
 
-export function validateConfig() {
+export async function validateConfig() {
+  // Initialize headers first
+  await initializeHeaders();
+
   Object.entries(config).forEach(([feature, settings]) => {
     if (
       feature in requiredEnvVars &&

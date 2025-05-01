@@ -71,7 +71,7 @@
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.40.0",
     "encoding": "^0.1.13",
-    "framer-motion": "^12.4.11",
+    "framer-motion": "^12.9.2",
     "geist": "^1.3.0",
     "html-react-parser": "^5.1.12",
     "lucide-react": "^0.479.0",
