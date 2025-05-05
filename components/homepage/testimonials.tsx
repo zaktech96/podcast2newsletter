@@ -3,49 +3,8 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-const testimonials = [
-  {
-    name: "Sarah Chen",
-    role: "Tech Podcast Host",
-    image: "/testimonials/sarah.jpg",
-    company: {
-      name: "Future Tech Today",
-      logo: "/companies/future-tech.svg"
-    },
-    quote: "We've seen a 300% increase in newsletter subscribers since using this platform. The AI summaries are incredibly accurate and save us hours of work.",
-    stats: {
-      subscribers: "15K+",
-      revenue: "$8.2K/mo"
-    }
-  },
-  {
-    name: "Michael Rodriguez",
-    role: "Business Strategy Host",
-    image: "/testimonials/michael.jpg",
-    company: {
-      name: "Strategy Insights",
-      logo: "/companies/strategy-insights.svg"
-    },
-    quote: "The quality of the AI-generated summaries is outstanding. Our open rates have increased by 45% and we're generating significant revenue from our newsletter.",
-    stats: {
-      subscribers: "22K+",
-      revenue: "$12K/mo"
-    }
-  },
-  {
-    name: "Emily Watson",
-    role: "Health & Wellness Creator",
-    image: "/testimonials/emily.jpg",
-    company: {
-      name: "Wellness Weekly",
-      logo: "/companies/wellness-weekly.svg"
-    },
-    quote: "This tool has transformed how we engage with our audience. The newsletter format helps us reach professionals who don't have time for full episodes.",
-    stats: {
-      subscribers: "18K+",
-      revenue: "$9.5K/mo"
-    }
-  }
+const testimonials: any[] = [
+  // All testimonials referencing sarah.jpg, michael.jpg, and emily.jpg have been removed as requested.
 ];
 
 const metrics = [
