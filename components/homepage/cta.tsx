@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -26,9 +27,11 @@ export function CTA() {
               Join thousands of podcast creators who are saving time and growing their audience with AI-powered summaries.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors">
-                Get Started Now →
-              </button>
+              <Link href="/sign-up">
+                <button className="px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors">
+                  Get Started Now →
+                </button>
+              </Link>
               <button className="px-8 py-4 border border-purple-600 text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 font-medium rounded-lg transition-colors">
                 Schedule a Demo
               </button>
