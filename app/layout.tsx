@@ -12,35 +12,35 @@ import { initializeHeaders } from '@/lib/next-headers-safe';
 // Initialize headers and validate config
 export async function generateMetadata(): Promise<Metadata> {
   await initializeHeaders();
-  validateConfig();
+validateConfig();
 
   return {
-    metadataBase: new URL('http://localhost:3000'),
-    title: {
-      default: 'Podcast2newsletter',
-      template: `%s | Podcast2newsletter`,
-    },
+  metadataBase: new URL('http://localhost:3000'),
+  title: {
+    default: 'Podcast2newsletter',
+    template: `%s | Podcast2newsletter`,
+  },
+  description: 'ai app to summarise podcast to newsletter',
+  icons: [
+    { rel: 'icon', url: '/favicon.ico' },
+    { rel: 'icon', url: '/favicon.png', type: 'image/png' },
+    { rel: 'apple-touch-icon', url: '/favicon.png' },
+  ],
+  openGraph: {
     description: 'ai app to summarise podcast to newsletter',
-    icons: [
-      { rel: 'icon', url: '/favicon.ico' },
-      { rel: 'icon', url: '/favicon.png', type: 'image/png' },
-      { rel: 'apple-touch-icon', url: '/favicon.png' },
-    ],
-    openGraph: {
-      description: 'ai app to summarise podcast to newsletter',
-      images: [''],
-      url: '',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: 'Podcast2newsletter',
-      description: 'ai app to summarise podcast to newsletter',
-      siteId: '',
-      creator: '',
-      creatorId: '',
-      images: [''],
-    },
-  };
+    images: [''],
+    url: '',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Podcast2newsletter',
+    description: 'ai app to summarise podcast to newsletter',
+    siteId: '',
+    creator: '',
+    creatorId: '',
+    images: [''],
+  },
+};
 }
 
 export default async function RootLayout({

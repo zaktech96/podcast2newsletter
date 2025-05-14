@@ -53,7 +53,7 @@ export default function SignInPage() {
         <p className="text-gray-600 dark:text-gray-300 mb-6 text-center">
           Sign in to continue your journey with our podcast-to-newsletter AI app.
         </p>
-        <SignIn appearance={{ baseTheme: dark }} />
+      <SignIn appearance={{ baseTheme: dark }} />
         <div className="mt-6 flex flex-col items-center w-full">
           <span className="text-xs text-gray-400 mb-2">Trusted by 1,000+ creators</span>
           <div className="flex gap-2">
