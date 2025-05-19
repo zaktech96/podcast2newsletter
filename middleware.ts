@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import config from './config';
 import { createServerActionClient } from '@/lib/supabase';
 import { clerkClient } from '@clerk/nextjs/server';
+import Link from 'next/link';
 
 let clerkMiddleware: (arg0: (auth: any, req: any) => any) => { (arg0: any): any; new (): any },
   createRouteMatcher;
