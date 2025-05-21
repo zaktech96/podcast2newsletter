@@ -16,6 +16,7 @@ import { UserProfile } from '../user-profile';
 import { Drawer } from '../ui/drawer';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+// import { SignOutButton as CustomSignOutButton } from '@/components/ui/sign-out-button';
 
 // Navigation items with sections to scroll to
 const navigationItems = [
@@ -239,7 +240,10 @@ export default function NavBar() {
           {/* Sign in button - visible only on desktop */}
           <div className="hidden md:block">
             {userId ? (
-              <UserProfile />
+              <>
+                <UserProfile />
+                <CustomSignOutButton />
+              </>
             ) : (
               <Button
                 variant="outline"
@@ -307,8 +311,9 @@ export default function NavBar() {
             transition={{ duration: 0.5, delay: 0.5 }}
           >
             {userId ? (
-              <div className="p-4">
+              <div className="p-4 flex flex-col gap-2">
                 <UserProfile />
+                <CustomSignOutButton />
               </div>
             ) : (
               <Button

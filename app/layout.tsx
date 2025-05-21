@@ -8,6 +8,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { validateConfig } from '@/lib/config-validator';
 import { initializeHeaders } from '@/lib/next-headers-safe';
+import { ClerkProvider } from "@clerk/nextjs";
 
 // Initialize headers and validate config
 export async function generateMetadata(): Promise<Metadata> {
@@ -52,26 +53,28 @@ export default async function RootLayout({
   validateConfig();
 
   return (
-    <AuthWrapper>
-      <html lang="en" suppressHydrationWarning>
-        <head>
-          <link rel="icon" type="image/png" href="/favicon.png" />
-        </head>
-        <body className={GeistSans.className}>
-          <Provider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-              <Toaster />
-            </ThemeProvider>
-          </Provider>
-          <Analytics />
-        </body>
-      </html>
-    </AuthWrapper>
+    <ClerkProvider>
+      <AuthWrapper>
+        <html lang="en" suppressHydrationWarning>
+          <head>
+            <link rel="icon" type="image/png" href="/favicon.png" />
+          </head>
+          <body className={GeistSans.className}>
+            <Provider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                {children}
+                <Toaster />
+              </ThemeProvider>
+            </Provider>
+            <Analytics />
+          </body>
+        </html>
+      </AuthWrapper>
+    </ClerkProvider>
   );
 }
