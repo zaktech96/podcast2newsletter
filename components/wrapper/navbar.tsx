@@ -242,7 +242,7 @@ export default function NavBar() {
             {userId ? (
               <>
                 <UserProfile />
-                <CustomSignOutButton />
+                {/* <CustomSignOutButton /> */}
               </>
             ) : (
               <Button
@@ -313,7 +313,7 @@ export default function NavBar() {
             {userId ? (
               <div className="p-4 flex flex-col gap-2">
                 <UserProfile />
-                <CustomSignOutButton />
+                {/* <CustomSignOutButton /> */}
               </div>
             ) : (
               <Button

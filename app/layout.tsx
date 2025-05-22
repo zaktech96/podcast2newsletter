@@ -54,27 +54,27 @@ export default async function RootLayout({
 
   return (
     <ClerkProvider>
-      <AuthWrapper>
-        <html lang="en" suppressHydrationWarning>
-          <head>
-            <link rel="icon" type="image/png" href="/favicon.png" />
-          </head>
-          <body className={GeistSans.className}>
-            <Provider>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-              >
-                {children}
-                <Toaster />
-              </ThemeProvider>
-            </Provider>
-            <Analytics />
-          </body>
-        </html>
-      </AuthWrapper>
+    <AuthWrapper>
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          <link rel="icon" type="image/png" href="/favicon.png" />
+        </head>
+        <body className={GeistSans.className}>
+          <Provider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+              <Toaster />
+            </ThemeProvider>
+          </Provider>
+          <Analytics />
+        </body>
+      </html>
+    </AuthWrapper>
     </ClerkProvider>
   );
 }
