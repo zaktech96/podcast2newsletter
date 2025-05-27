@@ -1,21 +1,16 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { ClerkProvider } from '@clerk/nextjs';
 import config from '@/config';
 
 interface AuthWrapperProps {
   children: ReactNode;
 }
 
-// This is a client component that wraps the ClerkProvider
-// No need for headers() here as it's not a server component accessing Clerk APIs directly
+// This is a client component that conditionally renders children
 const AuthWrapper = ({ children }: AuthWrapperProps) => {
-  if (!config.auth.enabled) {
-    return <>{children}</>;
-  }
-
-  return <ClerkProvider>{children}</ClerkProvider>;
+  // If you want to disable auth, just render children
+  return <>{children}</>;
 };
 
 export default AuthWrapper;
