@@ -6,6 +6,7 @@ import Testimonials from '@/components/homepage/testimonials'
 import Pricing from '@/components/homepage/pricing'
 import FAQ from '@/components/homepage/faq'
 import { CTA } from '@/components/homepage/cta'
+import { SignUp } from "@clerk/nextjs";
 
 export default function Home() {
   return (
