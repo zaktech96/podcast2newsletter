@@ -5,11 +5,19 @@ import { CheckCircleIcon } from "@heroicons/react/24/solid";
 export default function AddPodcastPage() {
   const [link, setLink] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // TODO: handle podcast link submission (API call, etc)
     setSubmitted(true);
+    setProgress(0);
+    // Simulate loading
+    let pct = 0;
+    const interval = setInterval(() => {
+      pct += 10;
+      setProgress(pct);
+      if (pct >= 100) clearInterval(interval);
+    }, 80);
   }
 
   return (
@@ -18,7 +26,33 @@ export default function AddPodcastPage() {
       <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-pink-200 opacity-20 rounded-full blur-3xl animate-pulse" />
       <div className="relative z-10 w-full max-w-md">
         <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl p-10 flex flex-col items-center animate-fade-in">
-          {!submitted ? (
+          {submitted ? (
+            progress < 100 ? (
+              <>
+                <div className="w-full mb-6">
+                  <div className="flex justify-between mb-1">
+                    <span className="text-xs font-medium text-purple-700 dark:text-purple-300">Processing...</span>
+                    <span className="text-xs font-medium text-purple-700 dark:text-purple-300">{progress}%</span>
+                  </div>
+                  <div className="w-full bg-purple-100 rounded-full h-2.5 dark:bg-purple-900/30">
+                    <div
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 h-2.5 rounded-full transition-all"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                </div>
+                <p className="text-gray-600 dark:text-gray-300 text-center">Adding your podcast link...</p>
+              </>
+            ) : (
+              <div className="flex flex-col items-center animate-fade-in">
+                <CheckCircleIcon className="w-16 h-16 text-green-500 mb-4" />
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Podcast Added!</h2>
+                <p className="text-gray-600 dark:text-gray-300 mb-2 text-center">
+                  Your podcast link was submitted successfully.
+                </p>
+              </div>
+            )
+          ) : (
             <>
               <div className="mb-4">
                 <svg width={48} height={48} fill="none" viewBox="0 0 24 24">
@@ -52,14 +86,6 @@ export default function AddPodcastPage() {
                 </button>
               </form>
             </>
-          ) : (
-            <div className="flex flex-col items-center animate-fade-in">
-              <CheckCircleIcon className="w-16 h-16 text-green-500 mb-4" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Podcast Added!</h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-2 text-center">
-                Your podcast link was submitted successfully.
-              </p>
-            </div>
           )}
         </div>
       </div>
