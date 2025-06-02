@@ -56,12 +56,10 @@ const AnimatedBackground = () => {
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="overflow-x-hidden w-full">
-      <AnimatedBackground />
-      <main className="flex min-h-screen flex-col items-center justify-between w-full overflow-hidden">
+    <html lang="en">
+      <body>
         {children}
-      </main>
-      <Footer />
-    </div>
+      </body>
+    </html>
   );
 } 
