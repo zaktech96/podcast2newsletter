@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import PageWrapper from '@/components/wrapper/page-wrapper';
@@ -35,13 +34,17 @@ export default async function MarketingPage() {
           marketing your product and getting sales.
         </p>
         <div className="flex gap-2 mt-2">
-          <Link href="/dashboard" className="mt-2">
-            <Button size="lg">Get Started</Button>
+          <Link 
+            href="/dashboard"
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+          >
+            Get Started
           </Link>
-          <Link href="/dashboard" className="mt-2">
-            <Button size="lg" variant="outline">
-              Get Started
-            </Button>
+          <Link 
+            href="/dashboard" 
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-11 px-8 mt-2"
+          >
+            Get Started
           </Link>
         </div>
         <div className="mb-3 mt-[1.5rem] max-w-[900px] w-full">

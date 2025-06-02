@@ -1,10 +1,8 @@
 'use client';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import config from '@/config';
 import { useUser } from '@clerk/nextjs';
 
-export default function Settings() {
+export default function SettingsPage() {
   let user = null;
 
   if (config?.auth?.enabled) {
@@ -12,25 +10,31 @@ export default function Settings() {
   }
 
   return (
-    <div className="flex justify-start items-center flex-wrap px-4 pt-5 gap-4">
-      <div className="flex flex-col gap-3 mb-[5rem] w-full max-w-[700px]">
-        <h2 className="mt-10 scroll-m-20 border-b pb-2 w-full text-3xl font-semibold tracking-tight transition-colors first:mt-0">
-          My Profile
-        </h2>
-        <div className="flex w-full gap-3 mt-3">
-          <div className="flex flex-col gap-3 w-full">
-            <Label>First Name</Label>
-            <Input disabled defaultValue={user?.user?.firstName ? user?.user?.firstName : ''} />
+    <div className="space-y-6">
+      <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+      <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Name
+            </label>
+            <input
+              id="name"
+              type="text"
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              placeholder="Enter your name"
+            />
           </div>
-          <div className="flex flex-col gap-3 w-full">
-            <Label>Last Name</Label>
-            <Input disabled defaultValue={user?.user?.lastName ? user?.user?.lastName : ''} />
-          </div>
-        </div>
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-col gap-3">
-            <Label>E-mail</Label>
-            <Input disabled defaultValue={user?.user?.emailAddresses?.[0]?.emailAddress!} />
+          <div className="space-y-2">
+            <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              placeholder="Enter your email"
+            />
           </div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowRight, Sparkles, Zap } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -74,32 +73,30 @@ const FloatingCTA = () => {
         </motion.div>
         
         {/* Main button */}
-        <Button
-          asChild
-          size="lg"
+        <Link
+          href="https://github.com/ObaidUr-Rahmaan/titan"
+          target="_blank"
           className="relative bg-white dark:bg-black text-black dark:text-white border border-green-500 hover:bg-green-500/10 transition-all duration-300 group"
         >
-          <Link href="https://github.com/ObaidUr-Rahmaan/titan" target="_blank">
-            <motion.div 
-              className="flex items-center gap-2"
-              whileHover={{ x: 5 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          <motion.div 
+            className="flex items-center gap-2"
+            whileHover={{ x: 5 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          >
+            <span>Get Titan</span>
+            <motion.div
+              animate={{ x: [0, 5, 0] }}
+              transition={{ 
+                duration: 1.5, 
+                repeat: Infinity,
+                repeatDelay: 1
+              }}
             >
-              <span>Get Titan</span>
-              <motion.div
-                animate={{ x: [0, 5, 0] }}
-                transition={{ 
-                  duration: 1.5, 
-                  repeat: Infinity,
-                  repeatDelay: 1
-                }}
-              >
-                <ArrowRight className="h-4 w-4 group-hover:text-green-500" />
-              </motion.div>
-              <Zap className="h-4 w-4 text-green-500" />
+              <ArrowRight className="h-4 w-4 group-hover:text-green-500" />
             </motion.div>
-          </Link>
-        </Button>
+            <Zap className="h-4 w-4 text-green-500" />
+          </motion.div>
+        </Link>
       </div>
     </motion.div>
   );

@@ -1,78 +1,29 @@
 'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import config from '@/config';
-import { SignOutButton, useUser } from '@clerk/nextjs';
-import { CreditCard, LogOut, Settings, User } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import { useUser } from '@clerk/nextjs';
 
 export function UserProfile() {
-  // Return null early if auth is disabled to prevent Clerk components from rendering
-  if (!config?.auth?.enabled) {
-    return null;
-  }
-
-  const router = useRouter();
-  const pathname = usePathname();
-  const isDashboardPage = pathname?.startsWith('/dashboard');
   const { user } = useUser();
   
+  if (!user) {
+    return null;
+  }
+  
   return (
-    <div className="flex items-center gap-2">
-      {!isDashboardPage && (
-        <Link href="/dashboard">
-          <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white">
-            Go to Dashboard
-          </Button>
-        </Link>
-      )}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild className="w-[2.25rem] h-[2.25rem]">
-          <Avatar>
-            <AvatarImage src={user?.imageUrl} alt="User Profile" />
-            <AvatarFallback></AvatarFallback>
-          </Avatar>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <Link href="/user-profile">
-              <DropdownMenuItem>
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
-                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </Link>
-            <Link href="/dashboard/settings">
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
-                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </Link>
-          </DropdownMenuGroup>
-          <SignOutButton>
-            <DropdownMenuItem>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
-              <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </SignOutButton>
-        </DropdownMenuContent>
-      </DropdownMenu>
+    <div className="flex items-center gap-2 rounded-md p-2 hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer">
+      <div className="flex items-center justify-center h-10 w-10 rounded-full bg-primary text-primary-foreground">
+        {user.imageUrl ? (
+          <img
+            src={user.imageUrl}
+            alt={user.fullName || 'User'}
+            className="h-10 w-10 rounded-full"
+          />
+        ) : (
+          <span className="text-sm font-medium">
+            {user.fullName?.charAt(0) || user.emailAddresses[0]?.emailAddress?.charAt(0) || '?'}
+          </span>
+        )}
+      </div>
     </div>
   );
 }

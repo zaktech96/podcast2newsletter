@@ -1,69 +1,34 @@
 'use client';
-import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
-const FormSchema = z.object({
-  category: z.string(),
-});
-
-export default function Category() {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      category: '',
-    },
-  });
-
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    try {
-      form.reset();
-      return;
-    } catch (error) {
-      return error;
-    }
-  }
-
+export default function FinancePage() {
   return (
-    <main className="flex min-w-screen p-4 flex-col items-center justify-between ">
-      <div className="flex flex-col mb-[5rem] w-full">
-        <h1 className=" text-3xl font-semibold tracking-tight">Publish</h1>
-        <p className="leading-7 text-sm dark:text-gray-400">
-          Get ready to publish articles that have been written and saved
-        </p>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="max-w-[600px] space-y-3 mt-[1rem]"
-          >
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Enter random piece of information</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button type="submit">Submit</Button>
+    <div className="space-y-6">
+      <h1 className="text-3xl font-bold tracking-tight">Finance</h1>
+      <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Financial Overview</h2>
+          <p>Your financial information will appear here.</p>
+          <form className="space-y-4">
+            <div className="space-y-2">
+              <label htmlFor="amount" className="text-sm font-medium leading-none">
+                Amount
+              </label>
+              <input
+                id="amount"
+                type="number"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                placeholder="Enter amount"
+              />
+            </div>
+            <button
+              type="submit"
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+            >
+              Submit
+            </button>
           </form>
-        </Form>
+        </div>
       </div>
-    </main>
+    </div>
   );
 }

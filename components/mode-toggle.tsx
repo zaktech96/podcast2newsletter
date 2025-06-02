@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
-import { Button } from '@/components/ui/button';
-
 export default function ModeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -21,25 +19,21 @@ export default function ModeToggle() {
   return (
     <div>
       {theme === 'dark' ? (
-        <Button
-          variant="ghost"
-          className="hover:bg-inherit border-zinc-900 bg-[#0c0c0d]"
-          size="icon"
+        <button
+          className="inline-flex items-center justify-center rounded-md h-10 w-10 ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
           onClick={() => setTheme('light')}
         >
           <Sun className="w-5 h-5" />
           <span className="sr-only">Toggle theme</span>
-        </Button>
+        </button>
       ) : (
-        <Button
-          variant="ghost"
-          size="icon"
-          className="hover:bg-inherit border-zinc-100 bg-inherit"
+        <button
+          className="inline-flex items-center justify-center rounded-md h-10 w-10 ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
           onClick={() => setTheme('dark')}
         >
           <Moon className="w-5 h-5" />
           <span className="sr-only">Toggle theme</span>
-        </Button>
+        </button>
       )}
     </div>
   );

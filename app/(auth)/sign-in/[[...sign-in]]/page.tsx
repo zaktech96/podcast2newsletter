@@ -4,7 +4,6 @@ import { SignIn } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { dark } from '@clerk/themes';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 
 const Logo = () => (
@@ -37,9 +36,12 @@ export default function SignInPage() {
         <p className="text-center text-gray-500 mb-6">
           Authentication is currently disabled in this environment.
         </p>
-        <Button asChild variant="outline">
-          <Link href="/">Return to Home</Link>
-        </Button>
+        <Link 
+          href="/" 
+          className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          Return to Home
+        </Link>
       </div>
     );
   }
