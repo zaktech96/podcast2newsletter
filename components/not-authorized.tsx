@@ -1,35 +1,26 @@
 import { LockIcon } from 'lucide-react';
-import { Button } from './ui/button';
 import Link from 'next/link';
 
 export default function NotAuthorized() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black to-zinc-900">
-      <div className="w-full max-w-md p-8 bg-gradient-to-b from-zinc-800 to-zinc-900 rounded-2xl shadow-2xl border border-zinc-700 transform transition-all hover:scale-105 duration-300">
-        <div className="flex flex-col items-center">
-          <div className="relative w-20 h-20 mb-6">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full animate-pulse"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <LockIcon className="w-10 h-10 text-white" aria-hidden="true" />
-            </div>
-          </div>
-          <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300 mb-2 text-center">
-            Unauthorized Access
-          </h1>
-          <p className="text-xl text-gray-300 mb-8 text-center">
-            You don't have access to this page
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-md w-full space-y-8 p-8">
+        <div className="text-center">
+          <LockIcon className="mx-auto h-12 w-12 text-gray-400" />
+          <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">
+            Access Denied
+          </h2>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            You don't have permission to access this page.
           </p>
-          <p className="text-gray-400 mb-8 text-center">
-            It looks like you haven't subscribed yet. To access this content, please upgrade to our
-            premium service.
-          </p>
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-zinc-500 to-transparent mb-8"></div>
-          <Button
-            asChild
-            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+        </div>
+        <div className="mt-8 space-y-6">
+          <Link 
+            href="/dashboard"
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            <Link href="/">Upgrade Now</Link>
-          </Button>
+            Return to Dashboard
+          </Link>
         </div>
       </div>
     </div>
