@@ -20,12 +20,7 @@ export default function Navbar() {
         >
           About
         </Link>
-        <Link 
-          href="/transcribe"
-          className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-        >
-          Transcribe
-        </Link>
+
         <Link 
           href="/contact"
           className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"

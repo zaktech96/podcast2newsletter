@@ -13,6 +13,7 @@ import {
   LinkIcon
 } from '@heroicons/react/24/outline';
 import { transcribeVideo, TranscriptionResult } from '@/utils/actions/transcription';
+import { testServerAction } from '@/utils/actions/test';
 
 interface VideoTranscriberProps {
   className?: string;
@@ -24,8 +25,21 @@ export default function VideoTranscriber({ className = '' }: VideoTranscriberPro
   const [result, setResult] = useState<TranscriptionResult | null>(null);
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
 
+  const handleTestServerAction = async () => {
+    console.log('🔵 Testing server action...');
+    try {
+      const result = await testServerAction();
+      console.log('🔵 Test result:', result);
+      alert('Server action test: ' + result.message);
+    } catch (error) {
+      console.error('🔴 Test failed:', error);
+      alert('Server action test failed: ' + String(error));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     console.log('🚀 Form submitted with URL:', videoUrl);
     
     if (!videoUrl.trim()) {
@@ -113,6 +127,16 @@ export default function VideoTranscriber({ className = '' }: VideoTranscriberPro
           Convert any YouTube video into text with timestamps. Perfect for creating newsletters, blog posts, or study materials.
         </p>
       </motion.div>
+
+      {/* Test Button */}
+      <div className="mb-4 text-center">
+        <button
+          onClick={handleTestServerAction}
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+        >
+          Test Server Action
+        </button>
+      </div>
 
       {/* Input Form */}
       <motion.form

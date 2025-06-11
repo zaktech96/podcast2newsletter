@@ -1,5 +1,6 @@
 'use server';
 
+// @ts-ignore - Type definitions for youtube-transcript are not available
 import { YoutubeTranscript } from 'youtube-transcript';
 
 export interface TranscriptSegment {
@@ -48,12 +49,13 @@ function formatTranscriptWithTimestamps(transcript: TranscriptSegment[]): string
 }
 
 export async function transcribeVideo(videoUrl: string): Promise<TranscriptionResult> {
+  console.log('🚨 SERVER ACTION CALLED - transcribeVideo');
+  console.log('🚨 URL:', videoUrl);
+  
   try {
-    console.log('🎬 Starting transcription for:', videoUrl);
-    
     // Extract video ID from URL
     const videoId = extractVideoId(videoUrl);
-    console.log('📹 Extracted video ID:', videoId);
+    console.log('🚨 Video ID:', videoId);
     
     if (!videoId) {
       return {
@@ -62,49 +64,55 @@ export async function transcribeVideo(videoUrl: string): Promise<TranscriptionRe
       };
     }
 
-    // Fetch transcript using youtube-transcript
-    console.log('🔍 Attempting to fetch transcript...');
-    
-    // Try multiple approaches to get transcript
+    // Try primary method first
+    console.log('🚨 Trying primary method (YoutubeTranscript)...');
     let transcript;
     
     try {
-      // First try: English with no language specified (auto-detect)
-      console.log('🔍 Trying auto-detect language...');
       transcript = await YoutubeTranscript.fetchTranscript(videoId);
-    } catch (error) {
-      console.log('⚠️ Auto-detect failed, trying English:', error);
+      console.log('✅ Primary method worked, segments:', transcript?.length || 0);
+    } catch (primaryError) {
+      console.log('❌ Primary method failed:', String(primaryError));
+      
+      // Try with English language
       try {
-        // Second try: Explicitly English
-        transcript = await YoutubeTranscript.fetchTranscript(videoId, {
-          lang: 'en'
-        });
-      } catch (error2) {
-        console.log('⚠️ English failed, trying without options:', error2);
-        try {
-          // Third try: Just the video ID, no options
-          transcript = await YoutubeTranscript.fetchTranscript(videoId, {});
-        } catch (error3) {
-          console.log('💥 All transcript attempts failed:', error3);
-          throw error3;
-        }
+        console.log('🚨 Trying with English language...');
+        transcript = await YoutubeTranscript.fetchTranscript(videoId, { lang: 'en' });
+        console.log('✅ English method worked, segments:', transcript?.length || 0);
+      } catch (englishError) {
+        console.log('❌ English method failed:', String(englishError));
+        
+        // For now, let's provide a more helpful error message
+        return {
+          success: false,
+          error: `Unable to fetch transcript for this video. This could be because:
+          
+• The video doesn't have captions enabled
+• The video is private or restricted
+• YouTube has blocked transcript access
+• The video is too new and captions haven't been generated yet
+
+Try a different video that you know has captions (check by clicking CC on YouTube).`,
+          videoId
+        };
       }
     }
-    
-    console.log('📝 Transcript result:', transcript ? `${transcript.length} segments` : 'null');
 
-    if (!transcript || transcript.length === 0) {
+    if (!transcript || !Array.isArray(transcript) || transcript.length === 0) {
+      console.log('❌ Transcript is empty');
       return {
         success: false,
-        error: 'No transcript available for this video. The video may not have captions enabled.'
+        error: 'No transcript available for this video. The video may not have captions enabled.',
+        videoId
       };
     }
 
     // Format transcript
+    console.log('✅ Processing transcript with', transcript.length, 'segments');
     const formattedTranscript = transcript.map(item => ({
-      text: item.text.replace(/\n/g, ' ').trim(),
-      offset: item.offset,
-      duration: item.duration
+      text: item.text?.replace(/\n/g, ' ').trim() || '',
+      offset: item.offset || 0,
+      duration: item.duration || 0
     }));
 
     // Create full text version
@@ -116,6 +124,8 @@ export async function transcribeVideo(videoUrl: string): Promise<TranscriptionRe
       ? formattedTranscript[formattedTranscript.length - 1].offset + formattedTranscript[formattedTranscript.length - 1].duration
       : 0;
 
+    console.log('✅ Successfully processed transcript');
+
     return {
       success: true,
       transcript: formattedTranscript,
@@ -125,19 +135,20 @@ export async function transcribeVideo(videoUrl: string): Promise<TranscriptionRe
     };
 
   } catch (error) {
-    console.error('Transcription error:', error);
+    console.error('❌ TRANSCRIPTION ERROR:', error);
     
     let errorMessage = 'Failed to transcribe video. ';
     
     if (error instanceof Error) {
-      if (error.message.includes('not available')) {
+      const errorStr = error.message.toLowerCase();
+      if (errorStr.includes('not available') || errorStr.includes('no transcript')) {
         errorMessage += 'No transcript is available for this video.';
-      } else if (error.message.includes('private')) {
+      } else if (errorStr.includes('private') || errorStr.includes('unavailable')) {
         errorMessage += 'This video is private or unavailable.';
-      } else if (error.message.includes('disabled')) {
+      } else if (errorStr.includes('disabled')) {
         errorMessage += 'Transcripts are disabled for this video.';
       } else {
-        errorMessage += error.message;
+        errorMessage += `Error: ${error.message}`;
       }
     } else {
       errorMessage += 'Please check the video URL and try again.';
