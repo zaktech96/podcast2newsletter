@@ -44,18 +44,18 @@ export function UserProfile() {
         className="flex items-center gap-2 rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors w-full"
       >
         <div className="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-          {user.imageUrl ? (
-            <img
-              src={user.imageUrl}
-              alt={user.fullName || 'User'}
-              className="h-10 w-10 rounded-full"
-            />
-          ) : (
-            <span className="text-sm font-medium">
-              {user.fullName?.charAt(0) || user.emailAddresses[0]?.emailAddress?.charAt(0) || '?'}
-            </span>
-          )}
-        </div>
+        {user.imageUrl ? (
+          <img
+            src={user.imageUrl}
+            alt={user.fullName || 'User'}
+            className="h-10 w-10 rounded-full"
+          />
+        ) : (
+          <span className="text-sm font-medium">
+            {user.fullName?.charAt(0) || user.emailAddresses[0]?.emailAddress?.charAt(0) || '?'}
+          </span>
+        )}
+      </div>
         
         <div className="flex-1 text-left hidden md:block">
           <div className="text-sm font-medium text-gray-900 dark:text-white">

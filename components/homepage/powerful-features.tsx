@@ -210,7 +210,7 @@ export function PowerfulFeatures() {
                 repeat: Infinity,
                 repeatDelay: 3
               }}
-            >
+        >
               ⚡
             </motion.span>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 font-semibold">
@@ -321,13 +321,13 @@ export function PowerfulFeatures() {
 
                   {/* Title */}
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-gray-800 dark:group-hover:text-gray-100 transition-colors">
-                    {feature.title}
-                  </h3>
+                  {feature.title}
+                </h3>
 
                   {/* Description */}
                   <p className="text-gray-600 dark:text-gray-400 leading-relaxed group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
-                    {feature.description}
-                  </p>
+                  {feature.description}
+                </p>
 
                   {/* Progress bar */}
                   <div className="mt-6 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
@@ -338,7 +338,7 @@ export function PowerfulFeatures() {
                       transition={{ delay: 0.5 + index * 0.1, duration: 1, ease: "easeOut" }}
                     />
                   </div>
-                </div>
+              </div>
               </motion.div>
             </motion.div>
           ))}

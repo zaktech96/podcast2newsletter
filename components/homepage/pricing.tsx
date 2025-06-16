@@ -173,7 +173,7 @@ const badgeVariants = {
 
 const priceVariants = {
   initial: { scale: 0.5, opacity: 0 },
-  animate: { 
+  animate: {
     scale: 1, 
     opacity: 1,
     transition: {
@@ -377,13 +377,13 @@ export default function Pricing() {
 
                 <div className="relative z-10">
                   {/* Header */}
-                  <div className="mb-8">
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{plan.name}</h3>
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{plan.name}</h3>
                     <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{plan.description}</p>
-                  </div>
+                </div>
 
                   {/* Pricing */}
-                  <div className="mb-8">
+                <div className="mb-8">
                     <AnimatedPrice 
                       price={plan.price} 
                       originalPrice={plan.originalPrice}
@@ -399,7 +399,7 @@ export default function Pricing() {
                       >
                         <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400">
                           Save {plan.savings}
-                        </span>
+                    </span>
                       </motion.div>
                     )}
                   </div>
@@ -431,11 +431,11 @@ export default function Pricing() {
                       >
                         <span className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center shrink-0 mt-0.5">
                           <span className="w-2 h-2 bg-gray-400 rounded-full" />
-                        </span>
+                      </span>
                         <span className="text-sm leading-relaxed">{limitation}</span>
                       </motion.li>
-                    ))}
-                  </ul>
+                  ))}
+                </ul>
 
                   {/* CTA Button */}
                   <motion.a 
@@ -444,12 +444,12 @@ export default function Pricing() {
                       plan.popular || plan.name === 'Free Trial'
                         ? `bg-gradient-to-r ${plan.gradient} text-white shadow-lg hover:shadow-xl`
                         : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-500'
-                    }`}
+                  }`}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
                     <span className="relative z-10 flex items-center justify-center gap-2">
-                      {plan.cta}
+                  {plan.cta}
                       <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </span>
                     
@@ -461,7 +461,7 @@ export default function Pricing() {
                       transition={{ duration: 0.6 }}
                     />
                   </motion.a>
-                </div>
+              </div>
               </motion.div>
             </motion.div>
           ))}
