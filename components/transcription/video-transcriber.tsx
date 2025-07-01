@@ -10,7 +10,11 @@ import {
   ExclamationTriangleIcon,
   ClockIcon,
   DocumentTextIcon,
-  LinkIcon
+  LinkIcon,
+  SparklesIcon,
+  TagIcon,
+  ListBulletIcon,
+  AcademicCapIcon
 } from '@heroicons/react/24/outline';
 import { transcribeVideo, TranscriptionResult } from '@/utils/actions/transcription';
 import { testServerAction } from '@/utils/actions/test';
@@ -168,7 +172,7 @@ export default function VideoTranscriber({ className = '' }: VideoTranscriberPro
             {isLoading ? (
               <div className="flex items-center gap-2">
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                <span>Transcribing...</span>
+                <span>Transcribing & Summarizing...</span>
               </div>
             ) : (
               <div className="flex items-center gap-2">
@@ -182,7 +186,7 @@ export default function VideoTranscriber({ className = '' }: VideoTranscriberPro
           <button
             type="button"
             className="text-xs text-purple-700 dark:text-purple-300 hover:underline mt-1 flex items-center gap-1"
-            onClick={() => setVideoUrl('https://www.youtube.com/watch?v=G7KNmW9a75Y')}
+            onClick={() => setVideoUrl('https://www.youtube.com/watch?v=dQw4w9WgXcQ')}
             tabIndex={-1}
           >
             <PlayIcon className="w-4 h-4" /> Try an example video
@@ -226,18 +230,33 @@ export default function VideoTranscriber({ className = '' }: VideoTranscriberPro
                       </div>
                       <div>
                         <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                          Transcription Complete!
+                          {result.metadata?.title || 'Transcription Complete!'}
                         </h3>
                         <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-                          <span className="flex items-center gap-1">
-                            <ClockIcon className="w-4 h-4" />
-                            {result.duration && formatDuration(result.duration)}
-                          </span>
+                          {result.duration && (
+                            <span className="flex items-center gap-1">
+                              <ClockIcon className="w-4 h-4" />
+                              {formatDuration(result.duration)}
+                            </span>
+                          )}
                           <span className="flex items-center gap-1">
                             <DocumentTextIcon className="w-4 h-4" />
                             {result.transcript?.length || 0} segments
                           </span>
+                          {result.method && (
+                            <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">
+                              {result.method === 'youtube-transcript-plus' ? 'Method 1' : 
+                               result.method === 'youtubei.js' ? 'Method 2' : 
+                               result.method === 'youtube-captions-scraper' ? 'Method 3' : 
+                               result.method}
+                            </span>
+                          )}
                         </div>
+                        {result.metadata?.channelTitle && (
+                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                            by {result.metadata.channelTitle}
+                          </p>
+                        )}
                       </div>
                     </div>
                     
@@ -269,8 +288,94 @@ export default function VideoTranscriber({ className = '' }: VideoTranscriberPro
                   </div>
                 </div>
 
+                {/* AI Summary Section */}
+                {result.summary && (
+                  <div className="p-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
+                    <div className="flex items-center gap-2 mb-4">
+                      <SparklesIcon className="w-5 h-5 text-blue-600" />
+                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white">AI Summary</h4>
+                      <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">
+                        {result.summary.estimatedReadTime}
+                      </span>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {/* Left Column - Summary & Key Points */}
+                      <div className="space-y-4">
+                        <div>
+                          <h5 className="font-medium text-gray-900 dark:text-white mb-2">{result.summary.title}</h5>
+                          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                            {result.summary.summary}
+                          </p>
+                        </div>
+                        
+                        <div>
+                          <div className="flex items-center gap-2 mb-2">
+                            <ListBulletIcon className="w-4 h-4 text-green-600" />
+                            <span className="font-medium text-gray-900 dark:text-white text-sm">Key Points</span>
+                          </div>
+                          <ul className="space-y-1">
+                            {result.summary.keyPoints.map((point, index) => (
+                              <li key={index} className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
+                                <span className="text-green-500 mt-1">•</span>
+                                <span>{point}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      {/* Right Column - Categories & Action Items */}
+                      <div className="space-y-4">
+                        <div>
+                          <div className="flex items-center gap-2 mb-2">
+                            <TagIcon className="w-4 h-4 text-purple-600" />
+                            <span className="font-medium text-gray-900 dark:text-white text-sm">Categories</span>
+                          </div>
+                          <div className="flex flex-wrap gap-1">
+                            {result.summary.categories.map((category, index) => (
+                              <span key={index} className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs">
+                                {category}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-4 text-sm">
+                          <div className="flex items-center gap-1">
+                            <AcademicCapIcon className="w-4 h-4 text-orange-600" />
+                            <span className="text-gray-600 dark:text-gray-400">Level:</span>
+                            <span className="font-medium text-gray-900 dark:text-white">{result.summary.difficulty}</span>
+                          </div>
+                        </div>
+                        
+                        {result.summary.actionItems && result.summary.actionItems.length > 0 && (
+                          <div>
+                            <div className="flex items-center gap-2 mb-2">
+                              <CheckIcon className="w-4 h-4 text-blue-600" />
+                              <span className="font-medium text-gray-900 dark:text-white text-sm">Action Items</span>
+                            </div>
+                            <ul className="space-y-1">
+                              {result.summary.actionItems.map((item, index) => (
+                                <li key={index} className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
+                                  <span className="text-blue-500 mt-1">→</span>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Transcript Content */}
                 <div className="p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <DocumentTextIcon className="w-5 h-5 text-gray-600" />
+                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Full Transcript</h4>
+                  </div>
                   <div className="max-h-96 overflow-y-auto bg-gray-50 dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
                     <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 font-mono leading-relaxed">
                       {result.fullText}
@@ -317,6 +422,13 @@ export default function VideoTranscriber({ className = '' }: VideoTranscriberPro
           </div>
           <h3 className="font-semibold text-lg mb-1 text-purple-700 dark:text-purple-300">Timestamped Text</h3>
           <p className="text-gray-600 dark:text-gray-400 text-sm">Get accurate timestamps for every segment of the transcript</p>
+        </div>
+        <div className="flex-1 flex flex-col items-center text-center p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-full p-4 mb-3 shadow-lg border-2 border-blue-200 dark:border-blue-800">
+            <SparklesIcon className="w-7 h-7 text-blue-600" />
+          </div>
+          <h3 className="font-semibold text-lg mb-1 text-blue-700 dark:text-blue-300">AI Summary</h3>
+          <p className="text-gray-600 dark:text-gray-400 text-sm">Get key points, action items, and practical insights automatically</p>
         </div>
         <div className="flex-1 flex flex-col items-center text-center p-4">
           <div className="bg-white dark:bg-gray-900 rounded-full p-4 mb-3 shadow-lg border-2 border-pink-200 dark:border-pink-800">
