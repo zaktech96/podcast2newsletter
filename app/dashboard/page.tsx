@@ -1,21 +1,49 @@
+'use client';
+import { useUser } from '@clerk/nextjs';
 import Link from 'next/link';
+import { FaPodcast, FaRegNewspaper, FaPlusCircle, FaChartBar } from 'react-icons/fa';
 
 export default function DashboardPage() {
+  const { user } = useUser();
+
   return (
-    <div className="space-y-6">
-      <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
-        <div className="flex flex-col space-y-1.5 p-6">
-          <h3 className="text-2xl font-semibold leading-none tracking-tight">Welcome to Dashboard</h3>
-          <p className="text-sm text-muted-foreground">Manage your podcasts and newsletters</p>
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-100 dark:from-black dark:via-purple-900/30 dark:to-black p-6 flex flex-col items-center">
+      <div className="w-full max-w-3xl mx-auto space-y-8">
+        {/* Welcome Card */}
+        <div className="rounded-3xl shadow-2xl bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 p-8 flex flex-col items-center text-center">
+          <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            Welcome{user?.firstName ? `, ${user.firstName}` : ''}!
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">
+            Manage your podcasts and newsletters with ease.
+          </p>
+          <div className="flex gap-4 justify-center mt-4">
+            <Link href="/add-podcast" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold shadow-lg hover:scale-105 transition-transform">
+              <FaPlusCircle /> Add Podcast
+            </Link>
+            <Link href="/dashboard/newsletters" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white dark:bg-gray-800 text-purple-600 dark:text-purple-300 font-semibold border border-purple-200 dark:border-purple-700 shadow hover:scale-105 transition-transform">
+              <FaRegNewspaper /> View Newsletters
+            </Link>
+          </div>
         </div>
-        <div className="p-6 pt-0">
-          <p>This is your dashboard content.</p>
-          <Link 
-            href="/add-podcast"
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 mt-4"
-          >
-            Add Podcast
-          </Link>
+
+        {/* Stats Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
+          <div className="rounded-2xl bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900 dark:to-purple-800 p-6 flex flex-col items-center shadow">
+            <FaPodcast className="text-3xl text-purple-600 dark:text-purple-300 mb-2" />
+            <div className="text-2xl font-bold text-purple-700 dark:text-purple-200">3</div>
+            <div className="text-sm text-purple-700 dark:text-purple-200">Podcasts</div>
+          </div>
+          <div className="rounded-2xl bg-gradient-to-br from-pink-100 to-pink-200 dark:from-pink-900 dark:to-pink-800 p-6 flex flex-col items-center shadow">
+            <FaRegNewspaper className="text-3xl text-pink-600 dark:text-pink-300 mb-2" />
+            <div className="text-2xl font-bold text-pink-700 dark:text-pink-200">12</div>
+            <div className="text-sm text-pink-700 dark:text-pink-200">Newsletters</div>
+          </div>
+          <div className="rounded-2xl bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 p-6 flex flex-col items-center shadow">
+            <FaChartBar className="text-3xl text-blue-600 dark:text-blue-300 mb-2" />
+            <div className="text-2xl font-bold text-blue-700 dark:text-blue-200">1.2k</div>
+            <div className="text-sm text-blue-700 dark:text-blue-200">Subscribers</div>
+          </div>
         </div>
       </div>
     </div>

@@ -134,3 +134,7 @@ as $$
   select first_name || ' ' || last_name;
 $$;
 ```
+
+If the podcast or transcript is not in English, first translate it to English before any further processing or summarization.
+
+Do not allow processing of podcasts shorter than 30 minutes. If a podcast is less than 30 minutes long, return a validation error and do not proceed.

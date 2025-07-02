@@ -392,6 +392,14 @@ export async function transcribeVideo(videoUrl: string): Promise<TranscriptionRe
           method1Result.transcript[method1Result.transcript.length - 1].duration
         : 0;
 
+      // 🚨 Block if under 30 minutes
+      if (totalDuration < 1800000) {
+        return {
+          success: false,
+          error: 'Podcast/video must be at least 30 minutes long to be processed.'
+        };
+      }
+
       console.log('✅ Successfully processed transcript with youtube-transcript-plus');
 
       // Generate AI summary
@@ -423,6 +431,14 @@ export async function transcribeVideo(videoUrl: string): Promise<TranscriptionRe
           method2Result.transcript[method2Result.transcript.length - 1].duration
         : 0;
 
+      // 🚨 Block if under 30 minutes
+      if (totalDuration < 1800000) {
+        return {
+          success: false,
+          error: 'Podcast/video must be at least 30 minutes long to be processed.'
+        };
+      }
+
       console.log('✅ Successfully processed transcript with youtubei.js');
 
       // Generate AI summary
@@ -446,36 +462,44 @@ export async function transcribeVideo(videoUrl: string): Promise<TranscriptionRe
       }
     }
 
-         // Method 3: Try youtube-captions-scraper
-     const method3Result = await transcribeWithCaptionsScraper(videoId);
-     if (method3Result.success && method3Result.transcript) {
-       // Success with method 3
-       const fullText = method3Result.transcript.map(item => item.text).join(' ');
-       const fullTextWithTimestamps = formatTranscriptWithTimestamps(method3Result.transcript);
-       
-       const totalDuration = method3Result.transcript.length > 0 
-         ? method3Result.transcript[method3Result.transcript.length - 1].offset + 
-           method3Result.transcript[method3Result.transcript.length - 1].duration
-         : 0;
+    // Method 3: Try youtube-captions-scraper
+    const method3Result = await transcribeWithCaptionsScraper(videoId);
+    if (method3Result.success && method3Result.transcript) {
+      // Success with method 3
+      const fullText = method3Result.transcript.map(item => item.text).join(' ');
+      const fullTextWithTimestamps = formatTranscriptWithTimestamps(method3Result.transcript);
+      
+      const totalDuration = method3Result.transcript.length > 0 
+        ? method3Result.transcript[method3Result.transcript.length - 1].offset + 
+          method3Result.transcript[method3Result.transcript.length - 1].duration
+        : 0;
 
-       console.log('✅ Successfully processed transcript with youtube-captions-scraper');
+      // 🚨 Block if under 30 minutes
+      if (totalDuration < 1800000) {
+        return {
+          success: false,
+          error: 'Podcast/video must be at least 30 minutes long to be processed.'
+        };
+      }
 
-       // Generate AI summary
-       const summary = await generateVideoSummary(fullText, finalMetadata);
+      console.log('✅ Successfully processed transcript with youtube-captions-scraper');
 
-       return {
-         success: true,
-         transcript: method3Result.transcript,
-         fullText: fullTextWithTimestamps,
-         videoId,
-         duration: totalDuration,
-         metadata: finalMetadata,
-         method: 'youtube-captions-scraper' as const,
-         summary: summary || undefined
-       };
-     } else {
-       errors.push(method3Result.error || 'youtube-captions-scraper failed');
-     }
+      // Generate AI summary
+      const summary = await generateVideoSummary(fullText, finalMetadata);
+
+      return {
+        success: true,
+        transcript: method3Result.transcript,
+        fullText: fullTextWithTimestamps,
+        videoId,
+        duration: totalDuration,
+        metadata: finalMetadata,
+        method: 'youtube-captions-scraper' as const,
+        summary: summary || undefined
+      };
+    } else {
+      errors.push(method3Result.error || 'youtube-captions-scraper failed');
+    }
 
     // All methods failed
     console.log('❌ All transcription methods failed');
