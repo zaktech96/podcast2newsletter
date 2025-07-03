@@ -102,9 +102,9 @@ async function transcribeWithYoutubeTranscriptPlus(videoId: string): Promise<{
     }
 
     const formattedTranscript = transcript.map(item => ({
-      text: item.text?.replace(/\n/g, ' ').trim() || '',
-      offset: item.offset || 0,
-      duration: item.duration || 0
+      text: (item as any).text?.replace(/\n/g, ' ').trim() || '',
+      offset: typeof (item as any).start === 'number' ? Math.round((item as any).start * 1000) : 0,
+      duration: typeof (item as any).duration === 'number' ? Math.round((item as any).duration * 1000) : 0
     }));
 
     console.log('✅ youtube-transcript-plus succeeded with', formattedTranscript.length, 'segments');
@@ -361,24 +361,6 @@ IMPORTANT: Keep the summary under 800 characters while maintaining its usefulnes
   }
 }
 
-// Utility to fetch YouTube video metadata (duration, title, etc.) using youtubei.js
-async function fetchYoutubeMetadata(videoId: string): Promise<VideoMetadata | undefined> {
-  try {
-    const youtube = await Innertube.create({ generate_session_locally: true });
-    const info = await youtube.getInfo(videoId);
-    return {
-      id: videoId,
-      title: info.basic_info.title,
-      duration: info.basic_info.duration?.seconds_total ? info.basic_info.duration.seconds_total * 1000 : undefined,
-      channelTitle: info.basic_info.channel?.name,
-      thumbnailUrl: info.basic_info.thumbnail?.[0]?.url
-    };
-  } catch (e) {
-    console.error('Failed to fetch YouTube metadata:', e);
-    return undefined;
-  }
-}
-
 export async function transcribeVideo(videoUrl: string): Promise<TranscriptionResult> {
   console.log('🚨 SERVER ACTION CALLED - transcribeVideo (Enhanced)');
   console.log('🚨 URL:', videoUrl);
@@ -401,16 +383,14 @@ export async function transcribeVideo(videoUrl: string): Promise<TranscriptionRe
     // Method 1: Try youtube-transcript-plus
     const method1Result = await transcribeWithYoutubeTranscriptPlus(videoId);
     if (method1Result.success && method1Result.transcript) {
-      finalMetadata = await fetchYoutubeMetadata(videoId);
-      const fullText = method1Result.transcript.map(item => item.text).join(' ');
+      // Success with method 1
       const fullTextWithTimestamps = formatTranscriptWithTimestamps(method1Result.transcript);
-      const summary = await generateVideoSummary(fullText, finalMetadata);
+      const summary = await generateVideoSummary(fullTextWithTimestamps, undefined);
       return {
         success: true,
         transcript: method1Result.transcript,
         fullText: fullTextWithTimestamps,
         videoId,
-        metadata: finalMetadata,
         method: 'youtube-transcript-plus',
         summary: summary || undefined
       };
@@ -421,10 +401,10 @@ export async function transcribeVideo(videoUrl: string): Promise<TranscriptionRe
     // Method 2: Try youtubei.js
     const method2Result = await transcribeWithYoutubeiJs(videoId);
     if (method2Result.success && method2Result.transcript) {
+      // Success with method 2
       finalMetadata = method2Result.metadata;
-      const fullText = method2Result.transcript.map(item => item.text).join(' ');
       const fullTextWithTimestamps = formatTranscriptWithTimestamps(method2Result.transcript);
-      const summary = await generateVideoSummary(fullText, finalMetadata);
+      const summary = await generateVideoSummary(fullTextWithTimestamps, finalMetadata);
       return {
         success: true,
         transcript: method2Result.transcript,
@@ -445,10 +425,9 @@ export async function transcribeVideo(videoUrl: string): Promise<TranscriptionRe
     // Method 3: Try youtube-captions-scraper
     const method3Result = await transcribeWithCaptionsScraper(videoId);
     if (method3Result.success && method3Result.transcript) {
-      if (!finalMetadata) finalMetadata = await fetchYoutubeMetadata(videoId);
-      const fullText = method3Result.transcript.map(item => item.text).join(' ');
+      // Success with method 3
       const fullTextWithTimestamps = formatTranscriptWithTimestamps(method3Result.transcript);
-      const summary = await generateVideoSummary(fullText, finalMetadata);
+      const summary = await generateVideoSummary(fullTextWithTimestamps, finalMetadata);
       return {
         success: true,
         transcript: method3Result.transcript,
