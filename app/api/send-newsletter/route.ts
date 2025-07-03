@@ -5,7 +5,7 @@ const plunk = new Plunk(process.env.PLUNK_API_KEY || '');
 
 export async function POST(req: Request) {
   try {
-    const { to, summary, episodeTitle } = await req.json();
+    const { to, summary, episodeTitle, episodeUrl } = await req.json();
 
     if (!to || !summary || !episodeTitle) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
         </div>
         
         <div style="text-align: center; margin: 30px 0;">
-          <a href="#" style="background: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+          <a href="${episodeUrl}" style="background: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
             Listen to the Full Episode
           </a>
         </div>

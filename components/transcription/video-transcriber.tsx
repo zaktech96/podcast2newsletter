@@ -120,6 +120,7 @@ export default function VideoTranscriber({ className = '' }: VideoTranscriberPro
         body: JSON.stringify({
           summary: result.summary.summary,
           episodeTitle: result.summary.title,
+          episodeUrl: videoUrl,
           to: 'zakariyesahid96@gmail.com', // <-- change to dynamic user email if needed
         }),
       });
