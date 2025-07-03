@@ -385,7 +385,7 @@ export async function transcribeVideo(videoUrl: string): Promise<TranscriptionRe
     if (method1Result.success && method1Result.transcript) {
       // Success with method 1
       const fullTextWithTimestamps = formatTranscriptWithTimestamps(method1Result.transcript);
-      const summary = await generateVideoSummary(fullTextWithTimestamps, undefined);
+      const summary = await generateVideoSummary(fullTextWithTimestamps, undefined /* language param here */);
       return {
         success: true,
         transcript: method1Result.transcript,

@@ -115,13 +115,6 @@ export default function HeroSection() {
               variants={fadeIn}
             >
               <Link 
-                href="/add-podcast"
-                className="group inline-flex px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold hover:opacity-90 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/30 items-center gap-3"
-              >
-                <span>Start Free Trial</span>
-                <span>→</span>
-              </Link>
-              <Link 
                 href="/transcribe"
                 className="group inline-flex px-8 py-4 rounded-2xl bg-white/80 dark:bg-gray-900/80 text-purple-600 dark:text-purple-400 font-semibold hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-300 items-center gap-3 backdrop-blur-sm border border-purple-200/50 dark:border-purple-800/50"
               >
