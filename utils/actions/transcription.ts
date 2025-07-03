@@ -361,6 +361,24 @@ IMPORTANT: Keep the summary under 800 characters while maintaining its usefulnes
   }
 }
 
+// Utility to fetch YouTube video metadata (duration, title, etc.) using youtubei.js
+async function fetchYoutubeMetadata(videoId: string): Promise<VideoMetadata | undefined> {
+  try {
+    const youtube = await Innertube.create({ generate_session_locally: true });
+    const info = await youtube.getInfo(videoId);
+    return {
+      id: videoId,
+      title: info.basic_info.title,
+      duration: info.basic_info.duration?.seconds_total ? info.basic_info.duration.seconds_total * 1000 : undefined,
+      channelTitle: info.basic_info.channel?.name,
+      thumbnailUrl: info.basic_info.thumbnail?.[0]?.url
+    };
+  } catch (e) {
+    console.error('Failed to fetch YouTube metadata:', e);
+    return undefined;
+  }
+}
+
 export async function transcribeVideo(videoUrl: string): Promise<TranscriptionResult> {
   console.log('🚨 SERVER ACTION CALLED - transcribeVideo (Enhanced)');
   console.log('🚨 URL:', videoUrl);
@@ -383,34 +401,16 @@ export async function transcribeVideo(videoUrl: string): Promise<TranscriptionRe
     // Method 1: Try youtube-transcript-plus
     const method1Result = await transcribeWithYoutubeTranscriptPlus(videoId);
     if (method1Result.success && method1Result.transcript) {
-      // Success with method 1
+      finalMetadata = await fetchYoutubeMetadata(videoId);
       const fullText = method1Result.transcript.map(item => item.text).join(' ');
       const fullTextWithTimestamps = formatTranscriptWithTimestamps(method1Result.transcript);
-      
-      const totalDuration = method1Result.transcript.length > 0 
-        ? method1Result.transcript[method1Result.transcript.length - 1].offset + 
-          method1Result.transcript[method1Result.transcript.length - 1].duration
-        : 0;
-
-      // 🚨 Block if under 30 minutes
-      if (totalDuration < 1800000) {
-        return {
-          success: false,
-          error: 'Podcast/video must be at least 30 minutes long to be processed.'
-        };
-      }
-
-      console.log('✅ Successfully processed transcript with youtube-transcript-plus');
-
-      // Generate AI summary
-      const summary = await generateVideoSummary(fullText, undefined);
-
+      const summary = await generateVideoSummary(fullText, finalMetadata);
       return {
         success: true,
         transcript: method1Result.transcript,
         fullText: fullTextWithTimestamps,
         videoId,
-        duration: totalDuration,
+        metadata: finalMetadata,
         method: 'youtube-transcript-plus',
         summary: summary || undefined
       };
@@ -421,36 +421,16 @@ export async function transcribeVideo(videoUrl: string): Promise<TranscriptionRe
     // Method 2: Try youtubei.js
     const method2Result = await transcribeWithYoutubeiJs(videoId);
     if (method2Result.success && method2Result.transcript) {
-      // Success with method 2
       finalMetadata = method2Result.metadata;
       const fullText = method2Result.transcript.map(item => item.text).join(' ');
       const fullTextWithTimestamps = formatTranscriptWithTimestamps(method2Result.transcript);
-      
-      const totalDuration = method2Result.transcript.length > 0 
-        ? method2Result.transcript[method2Result.transcript.length - 1].offset + 
-          method2Result.transcript[method2Result.transcript.length - 1].duration
-        : 0;
-
-      // 🚨 Block if under 30 minutes
-      if (totalDuration < 1800000) {
-        return {
-          success: false,
-          error: 'Podcast/video must be at least 30 minutes long to be processed.'
-        };
-      }
-
-      console.log('✅ Successfully processed transcript with youtubei.js');
-
-      // Generate AI summary
       const summary = await generateVideoSummary(fullText, finalMetadata);
-
       return {
         success: true,
         transcript: method2Result.transcript,
         fullText: fullTextWithTimestamps,
         videoId,
         title: finalMetadata?.title,
-        duration: totalDuration,
         metadata: finalMetadata,
         method: 'youtubei.js',
         summary: summary || undefined
@@ -465,34 +445,15 @@ export async function transcribeVideo(videoUrl: string): Promise<TranscriptionRe
     // Method 3: Try youtube-captions-scraper
     const method3Result = await transcribeWithCaptionsScraper(videoId);
     if (method3Result.success && method3Result.transcript) {
-      // Success with method 3
+      if (!finalMetadata) finalMetadata = await fetchYoutubeMetadata(videoId);
       const fullText = method3Result.transcript.map(item => item.text).join(' ');
       const fullTextWithTimestamps = formatTranscriptWithTimestamps(method3Result.transcript);
-      
-      const totalDuration = method3Result.transcript.length > 0 
-        ? method3Result.transcript[method3Result.transcript.length - 1].offset + 
-          method3Result.transcript[method3Result.transcript.length - 1].duration
-        : 0;
-
-      // 🚨 Block if under 30 minutes
-      if (totalDuration < 1800000) {
-        return {
-          success: false,
-          error: 'Podcast/video must be at least 30 minutes long to be processed.'
-        };
-      }
-
-      console.log('✅ Successfully processed transcript with youtube-captions-scraper');
-
-      // Generate AI summary
       const summary = await generateVideoSummary(fullText, finalMetadata);
-
       return {
         success: true,
         transcript: method3Result.transcript,
         fullText: fullTextWithTimestamps,
         videoId,
-        duration: totalDuration,
         metadata: finalMetadata,
         method: 'youtube-captions-scraper' as const,
         summary: summary || undefined

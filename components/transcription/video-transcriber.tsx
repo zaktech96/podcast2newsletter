@@ -29,6 +29,9 @@ export default function VideoTranscriber({ className = '' }: VideoTranscriberPro
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<TranscriptionResult | null>(null);
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
+  const [sendLoading, setSendLoading] = useState(false);
+  const [sendSuccess, setSendSuccess] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
 
   const handleTestServerAction = async () => {
     console.log('🔵 Testing server action...');
@@ -103,6 +106,30 @@ export default function VideoTranscriber({ className = '' }: VideoTranscriberPro
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const handleSendToEmail = async () => {
+    if (!result?.summary) return;
+    setSendLoading(true);
+    setSendSuccess(false);
+    setSendError(null);
+    try {
+      const res = await fetch('/api/send-newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          summary: result.summary.summary,
+          episodeTitle: result.summary.title,
+          to: 'zakariyesahid96@gmail.com', // <-- change to dynamic user email if needed
+        }),
+      });
+      if (!res.ok) throw new Error('Failed to send email');
+      setSendSuccess(true);
+    } catch (err: any) {
+      setSendError(err.message || 'Unknown error');
+    } finally {
+      setSendLoading(false);
+    }
   };
 
   return (
@@ -381,6 +408,19 @@ export default function VideoTranscriber({ className = '' }: VideoTranscriberPro
                       {result.fullText}
                     </pre>
                   </div>
+                </div>
+
+                {/* Send to Email Button */}
+                <div className="mt-6 flex flex-col items-center">
+                  <button
+                    onClick={handleSendToEmail}
+                    disabled={sendLoading}
+                    className="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+                  >
+                    {sendLoading ? 'Sending...' : 'Send to Email'}
+                  </button>
+                  {sendSuccess && <div className="text-green-600 mt-2">Newsletter sent to your email!</div>}
+                  {sendError && <div className="text-red-600 mt-2">{sendError}</div>}
                 </div>
               </div>
             ) : (

@@ -8,7 +8,7 @@ export default function AddPodcastPage() {
       </div>
     </div>
   );
-} 
+}
 
 export const metadata = {
   title: 'Add Podcast | Podcast2Newsletter',
