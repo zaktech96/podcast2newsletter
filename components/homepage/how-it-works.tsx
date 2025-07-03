@@ -165,24 +165,24 @@ export function HowItWorks() {
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Left side - Steps */}
           <div className="space-y-8">
-            {steps.map((step, index) => (
-              <motion.div
-                key={step.title}
-                variants={fadeInUp}
-                transition={{ delay: index * 0.1 }}
+          {steps.map((step, index) => (
+            <motion.div
+              key={step.title}
+              variants={fadeInUp}
+              transition={{ delay: index * 0.1 }}
                 className="relative group cursor-pointer"
-                whileHover={{ y: -8, scale: 1.02 }}
+              whileHover={{ y: -8, scale: 1.02 }}
                 onClick={() => setActiveStep(index)}
-              >
+            >
                 <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" style={{
-                  backgroundImage: `linear-gradient(to right, ${step.gradient})`
-                }} />
+                backgroundImage: `linear-gradient(to right, ${step.gradient})`
+              }} />
                 <div className={`relative bg-white/90 dark:bg-gray-900/90 rounded-3xl p-8 shadow-lg group-hover:shadow-2xl transition-all duration-300 backdrop-blur-md border-2 ${
                   activeStep === index 
                     ? 'border-purple-500/50 shadow-purple-500/20' 
                     : 'border-gray-200/50 dark:border-gray-800/50'
                 }`}>
-                  <div className="flex items-start gap-6">
+                <div className="flex items-start gap-6">
                     <div className={`w-20 h-20 ${step.color} rounded-2xl flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300 border border-gray-200/50 dark:border-gray-700/50 relative overflow-hidden`}>
                       <motion.div 
                         className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -191,19 +191,19 @@ export function HowItWorks() {
                         }}
                       />
                       <span className={`text-3xl ${step.iconColor} relative z-10 group-hover:text-white transition-colors duration-300`}>{step.icon}</span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-sm font-bold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">
+                        {step.number}
+                      </span>
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                        {step.title}
+                      </h3>
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-3">
-                        <span className="text-sm font-bold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">
-                          {step.number}
-                        </span>
-                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                          {step.title}
-                        </h3>
-                      </div>
                       <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
-                        {step.description}
-                      </p>
+                      {step.description}
+                    </p>
                       
                       {/* Expandable details */}
                       <motion.div

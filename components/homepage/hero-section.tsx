@@ -48,8 +48,8 @@ export default function HeroSection() {
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-white mb-8 leading-[0.9]">
               Turn Podcasts Into
               <br />
-              <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-purple-500 bg-clip-text text-transparent">
-                Premium Newsletters
+                <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+                  Premium Newsletters
               </span>
             </h1>
 
@@ -82,10 +82,10 @@ export default function HeroSection() {
                 >
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 flex items-center justify-center shadow-lg border border-purple-200/50 dark:border-purple-800/50">
                     <span className="text-xl">{feature.icon}</span>
-                  </div>
-                  <div>
+                    </div>
+                    <div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{feature.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-400">{feature.description}</p>
+                      <p className="text-gray-600 dark:text-gray-400">{feature.description}</p>
                   </div>
                 </motion.div>
               ))}
@@ -131,7 +131,7 @@ export default function HeroSection() {
             <div className="absolute inset-0 bg-gradient-to-r from-purple-100/50 to-pink-100/50 dark:from-purple-900/30 dark:to-pink-900/30 blur-3xl opacity-40 rounded-full" />
             <div className="bg-white/90 dark:bg-gray-900/90 rounded-3xl shadow-2xl p-8 backdrop-blur-md relative border border-gray-200/50 dark:border-gray-800/50">
               <div className="flex items-center gap-4 mb-8">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center shadow-lg">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center shadow-lg">
                   <span className="text-white text-2xl">📈</span>
                 </div>
                 <div>
@@ -139,7 +139,7 @@ export default function HeroSection() {
                   <p className="text-gray-500 dark:text-gray-400">From real podcasters</p>
                 </div>
               </div>
-
+              
               <div className="space-y-6">
                 {[
                   { label: 'Time Saved', value: '4+ hours', description: 'per episode' },
@@ -157,10 +157,10 @@ export default function HeroSection() {
                       </p>
                       <p className="text-sm text-gray-500 dark:text-gray-400">{metric.description}</p>
                     </div>
-                  </div>
-                ))}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
           </motion.div>
         </div>
       </motion.div>

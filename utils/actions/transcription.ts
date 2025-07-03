@@ -422,24 +422,24 @@ export async function transcribeVideo(videoUrl: string): Promise<TranscriptionRe
       }
     }
 
-    // Method 3: Try youtube-captions-scraper
-    const method3Result = await transcribeWithCaptionsScraper(videoId);
-    if (method3Result.success && method3Result.transcript) {
-      // Success with method 3
-      const fullTextWithTimestamps = formatTranscriptWithTimestamps(method3Result.transcript);
+         // Method 3: Try youtube-captions-scraper
+     const method3Result = await transcribeWithCaptionsScraper(videoId);
+     if (method3Result.success && method3Result.transcript) {
+       // Success with method 3
+       const fullTextWithTimestamps = formatTranscriptWithTimestamps(method3Result.transcript);
       const summary = await generateVideoSummary(fullTextWithTimestamps, finalMetadata);
-      return {
-        success: true,
-        transcript: method3Result.transcript,
-        fullText: fullTextWithTimestamps,
-        videoId,
-        metadata: finalMetadata,
-        method: 'youtube-captions-scraper' as const,
-        summary: summary || undefined
-      };
-    } else {
-      errors.push(method3Result.error || 'youtube-captions-scraper failed');
-    }
+       return {
+         success: true,
+         transcript: method3Result.transcript,
+         fullText: fullTextWithTimestamps,
+         videoId,
+         metadata: finalMetadata,
+         method: 'youtube-captions-scraper' as const,
+         summary: summary || undefined
+       };
+     } else {
+       errors.push(method3Result.error || 'youtube-captions-scraper failed');
+     }
 
     // All methods failed
     console.log('❌ All transcription methods failed');

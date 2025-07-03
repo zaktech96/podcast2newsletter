@@ -19,12 +19,14 @@ import {
 import { transcribeVideo, TranscriptionResult } from '@/utils/actions/transcription';
 import { testServerAction } from '@/utils/actions/test';
 import { YouTubeIcon } from '@/components/icons/youtube';
+import { useUser } from '@clerk/nextjs';
 
 interface VideoTranscriberProps {
   className?: string;
 }
 
 export default function VideoTranscriber({ className = '' }: VideoTranscriberProps) {
+  const { user } = useUser();
   const [videoUrl, setVideoUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<TranscriptionResult | null>(null);
@@ -110,6 +112,11 @@ export default function VideoTranscriber({ className = '' }: VideoTranscriberPro
 
   const handleSendToEmail = async () => {
     if (!result?.summary) return;
+    if (!user?.primaryEmailAddress?.emailAddress) {
+      setSendError('Please sign in to send emails');
+      return;
+    }
+    
     setSendLoading(true);
     setSendSuccess(false);
     setSendError(null);
@@ -121,7 +128,7 @@ export default function VideoTranscriber({ className = '' }: VideoTranscriberPro
           summary: result.summary.summary,
           episodeTitle: result.summary.title,
           episodeUrl: videoUrl,
-          to: 'zakariyesahid96@gmail.com', // <-- change to dynamic user email if needed
+          to: user.primaryEmailAddress.emailAddress,
         }),
       });
       if (!res.ok) throw new Error('Failed to send email');
